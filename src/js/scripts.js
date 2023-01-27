@@ -18,22 +18,24 @@ const camera = new THREE.PerspectiveCamera(
     1000
 );
 
-renderer.setClearColor(0xA3A3A3);
+const video = document.createElement("video");
+  navigator.mediaDevices.getUserMedia({video: true}).then((stream) => {
+    video.srcObject = stream;
+    video.play();
+  });
+
+  video.style.position = "absolute";
+  video.style.width = renderer.domElement.width;
+  video.style.height = renderer.domElement.height;
+  renderer.domElement.style.position = "absolute";
+
+  document.body.appendChild(video);
+  document.body.appendChild(renderer.domElement);
 
 const orbit = new OrbitControls(camera, renderer.domElement);
 
 camera.position.set(6, 6, 6);
 orbit.update();
-
-const grid = new THREE.GridHelper(30, 30);
-scene.add(grid);
-
-// const ambientLight = new THREE.AmbientLight(0xededed, 0.8);
-// scene.add(ambientLight);
-
-// const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1);
-// scene.add(directionalLight);
-// directionalLight.position.set(10, 11, 7);
 
 const gltfLoader = new GLTFLoader();
 
